@@ -53,8 +53,15 @@ namespace lpr381Project
             consBtn.Hide();
 
             Logger.Init("SensitivityAnalysis.txt");
-            Logger.WriteLine("SensitivityAnalysis started!");
-            sensitivityAnalysis.RunSensitivityAnalysis(objFunc, constraints, isMin, varSigns);
+            try
+            {
+                Logger.WriteLine("SensitivityAnalysis started!");
+                sensitivityAnalysis.RunSensitivityAnalysis(objFunc, constraints, isMin, varSigns);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"\nInvalid Input or Fatel Error!");
+            }
             Logger.Close();
 
             // Configure RichTextBox

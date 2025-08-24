@@ -11,7 +11,7 @@ namespace lpr381Project
     {
         private static StreamWriter writer;
 
-        public static void Init(string filePath = "log.txt", bool append = false)
+        public static void Init(string filePath = "output.txt", bool append = false)
         {
             writer = new StreamWriter(filePath, append);
             writer.AutoFlush = true;

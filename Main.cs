@@ -40,8 +40,6 @@ namespace lpr381Project
 
         private void UpdateInput()
         {
-            //File.WriteAllText("input.txt", mainInputBox.Text);
-
             InputReader reader = new InputReader("input.txt");
             var data = reader.GetData();
             (objFunc, constraints, isMin, varSigns) = data;
@@ -58,45 +56,14 @@ namespace lpr381Project
         {
             UpdateInput();
 
-            //Logger.Init("output.txt");
-
-            //Logger.WriteLine("Program started!");
-
-            //var instance = new RevisedPrimalSimplex(true);
-            //instance.Test();
-
-            //var instance = new BranchAndBound(true);
-            //instance.Test();
-
-            //Logger.Close();
-
-
             // Configure RichTextBox
             mainTextDisplay.WordWrap = false;               // prevent wrapping
             mainTextDisplay.Font = new Font("Consolas", 10); // monospaced font
             mainTextDisplay.ScrollBars = RichTextBoxScrollBars.Both; // horizontal + vertical
-
-            //string filePath = @"output.txt"; // your file path
-
-            //if (File.Exists(filePath))
-            //{
-            //    mainTextDisplay.Text = File.ReadAllText(filePath);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("File not found: " + filePath);
-            //}
-
-            //var analysis = new Analysis();
-            //analysis.Show();
         }
 
         private void enterInput_Click(object sender, EventArgs e)
         {
-            //mainInputBox
-            //string plainText = mainInputBox.Text;
-
-
             File.WriteAllText("input.txt", mainInputBox.Text);
             UpdateInput();
         }
@@ -106,9 +73,16 @@ namespace lpr381Project
             UpdateInput();
 
             Logger.Init("output.txt");
-            Logger.WriteLine("Primal Simplex\n");
-            PrimalSimplex primalSimplex = new PrimalSimplex(true);
-            primalSimplex.RunPrimalSimplex(objFunc, constraints, isMin, varSigns);
+            try
+            {
+                Logger.WriteLine("Primal Simplex\n");
+                PrimalSimplex primalSimplex = new PrimalSimplex(true);
+                primalSimplex.RunPrimalSimplex(objFunc, constraints, isMin, varSigns);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"\nInvalid Input or Fatel Error!");
+            }
             Logger.Close();
 
             UpdateOutput();
@@ -119,9 +93,16 @@ namespace lpr381Project
             UpdateInput();
 
             Logger.Init("output.txt");
-            Logger.WriteLine("Revised Primal Simplex\n");
-            RevisedPrimalSimplex revisedPrimalSimplex = new RevisedPrimalSimplex(true);
-            revisedPrimalSimplex.RunRevisedPrimalSimplex(objFunc, constraints, isMin, varSigns);
+            try
+            {
+                Logger.WriteLine("Revised Primal Simplex\n");
+                RevisedPrimalSimplex revisedPrimalSimplex = new RevisedPrimalSimplex(true);
+                revisedPrimalSimplex.RunRevisedPrimalSimplex(objFunc, constraints, isMin, varSigns);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"\nInvalid Input or Fatel Error!");
+            }
             Logger.Close();
 
             UpdateOutput();
@@ -145,9 +126,16 @@ namespace lpr381Project
             UpdateInput();
 
             Logger.Init("output.txt");
-            Logger.WriteLine("Branch And Bound Simplex\n");
-            KnapSack knapSack = new KnapSack(true);
-            knapSack.RunBranchAndBoundKnapSack(objFunc, constraints, isMin, varSigns);
+            try
+            {
+                Logger.WriteLine("Branch And Bound Simplex\n");
+                KnapSack knapSack = new KnapSack(true);
+                knapSack.RunBranchAndBoundKnapSack(objFunc, constraints, isMin, varSigns);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"\nInvalid Input or Fatel Error!");
+            }
             Logger.Close();
 
             UpdateOutput();
@@ -158,9 +146,17 @@ namespace lpr381Project
             UpdateInput();
 
             Logger.Init("output.txt");
-            Logger.WriteLine("Cutting Plane\n");
-            CuttingPlane cuttingPlane = new CuttingPlane(true);
-            cuttingPlane.RunCuttingPlane(objFunc, constraints, isMin, varSigns);
+            try
+            {
+
+                Logger.WriteLine("Cutting Plane\n");
+                CuttingPlane cuttingPlane = new CuttingPlane(true);
+                cuttingPlane.RunCuttingPlane(objFunc, constraints, isMin, varSigns);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"\nInvalid Input or Fatel Error!");
+            }
             Logger.Close();
 
             UpdateOutput();
@@ -168,20 +164,18 @@ namespace lpr381Project
 
         private void sensitivityAnalysisBtn_Click(object sender, EventArgs e)
         {
-            //UpdateInput();
-
-            //Logger.Init("output.txt");
-            //Logger.WriteLine("Cutting Plane\n");
-            //CuttingPlane cuttingPlane = new CuttingPlane(true);
-            //cuttingPlane.RunCuttingPlane(objFunc, constraints, isMin);
-            //Logger.Close();
-
-            //UpdateOutput();
-
-            var analysis = new Analysis();
-            analysis.SetProblem(objFunc, constraints, isMin, varSigns);
-
-            analysis.Show();
+            Logger.Init("output.txt");
+            try
+            {
+                var analysis = new Analysis();
+                analysis.SetProblem(objFunc, constraints, isMin, varSigns);
+                analysis.Show();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"\nInvalid Input or Fatel Error!");
+            }
+            Logger.Close();
         }
     }
 }

@@ -37,6 +37,7 @@
             button1 = new Button();
             cuttingPlaneBtn = new Button();
             sensitivityAnalysisBtn = new Button();
+            JesusLovesYou = new Label();
             SuspendLayout();
             // 
             // mainTextDisplay
@@ -127,11 +128,22 @@
             sensitivityAnalysisBtn.UseVisualStyleBackColor = true;
             sensitivityAnalysisBtn.Click += sensitivityAnalysisBtn_Click;
             // 
+            // JesusLovesYou
+            // 
+            JesusLovesYou.AutoSize = true;
+            JesusLovesYou.Font = new Font("Segoe UI", 14F);
+            JesusLovesYou.Location = new Point(658, 12);
+            JesusLovesYou.Name = "JesusLovesYou";
+            JesusLovesYou.Size = new Size(237, 125);
+            JesusLovesYou.TabIndex = 9;
+            JesusLovesYou.Text = "LPR 381 Project By: \r\nJanita de Vries: 577698 \r\nChristian Olivier: 576753\r\nTiaan Wessels: 600164\r\nBrett David Wilson: 601081";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1157, 583);
+            Controls.Add(JesusLovesYou);
             Controls.Add(sensitivityAnalysisBtn);
             Controls.Add(cuttingPlaneBtn);
             Controls.Add(button1);
@@ -145,6 +157,7 @@
             Text = "Main";
             Load += Main_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -158,5 +171,6 @@
         private Button button1;
         private Button cuttingPlaneBtn;
         private Button sensitivityAnalysisBtn;
+        private Label JesusLovesYou;
     }
 }

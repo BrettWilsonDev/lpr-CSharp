@@ -157,16 +157,6 @@ namespace lpr381Project
                     }
                 }
 
-                Logger.WriteLine("!!!!!!!! 1111111111");
-                foreach (var innerList in transformedConstraints)
-                {
-                    foreach (var value in innerList)
-                    {
-                        Logger.Write(value + " ");
-                    }
-                    Logger.WriteLine();
-                }
-
                 // Copy RHS and constraint type indicators
                 for (int i = 0; i < transformedConstraints.Count; i++)
                 {
@@ -199,16 +189,6 @@ namespace lpr381Project
                     binaryConstraint.Add(-1); // Constraint type for <= (adjust this value based on your system)
 
                     transformedConstraints.Add(binaryConstraint);
-                }
-
-                Logger.WriteLine("hub");
-                foreach (var innerList in transformedConstraints)
-                {
-                    foreach (var value in innerList)
-                    {
-                        Logger.Write(value + " ");
-                    }
-                    Logger.WriteLine();
                 }
 
                 return (transformedObjFunc, transformedConstraints);

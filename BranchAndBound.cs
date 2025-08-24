@@ -816,6 +816,8 @@ namespace lpr381Project
                     Logger.WriteLine($"Node of best solution: {bestSolutionNodeNum}");
                     Logger.WriteLine($"Best integer solution: [{string.Join(", ", bestSolution)}]");
                     Logger.WriteLine($"Best objective value: {bestObjective}");
+                    Logger.WriteLine($"Best solution:");
+                    PrintBasicVars(bestSolutionTableau);
                 }
                 else
                 {
@@ -861,6 +863,57 @@ namespace lpr381Project
             }
 
             return (objFunc, constraints);
+        }
+
+        public void PrintBasicVars(List<List<double>> tableau)
+        {
+            Logger.WriteLine("\n=== BASIC VARIABLE VALUES (Decision Variables Only) ===");
+
+            List<int> basicVarColumns = new List<int>();
+
+            // Only check decision variables (first objFunc.Count columns)
+            for (int col = 0; col < objFunc.Count; col++)
+            {
+                List<double> column = new List<double>();
+
+                // Extract the column values (skip objective row for basic variable identification)
+                for (int row = 1; row < tableau.Count; row++)
+                {
+                    column.Add((tableau[row][col]));
+                }
+
+                // Check if this is a unit vector (exactly one 1, rest 0s)
+                int onesCount = column.Count(x => Math.Abs(x - 1.0) < tolerance);
+                int zerosCount = column.Count(x => Math.Abs(x) < tolerance);
+
+                if (onesCount == 1 && zerosCount == column.Count - 1)
+                {
+                    basicVarColumns.Add(col);
+                }
+            }
+
+            foreach (int col in basicVarColumns)
+            {
+                // Find which row has the "1" for this basic variable
+                int basicRow = -1;
+                for (int row = 1; row < tableau.Count; row++) // Skip objective row
+                {
+                    if (Math.Abs((tableau[row][col]) - 1.0) < tolerance)
+                    {
+                        basicRow = row;
+                        break;
+                    }
+                }
+
+                if (basicRow != -1)
+                {
+                    double rhsValue = (tableau[basicRow][tableau[basicRow].Count - 1]);
+                    string varName = $"x{col + 1}";
+                    Logger.WriteLine($"{varName} = {(rhsValue)}");
+                }
+            }
+
+            Logger.WriteLine();
         }
 
         public void RunBranchAndBound(List<double> objFuncPassed, List<List<double>> constraintsPassed, bool isMin, List<VariableSignType> varSigns = null)

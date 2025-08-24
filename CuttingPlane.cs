@@ -288,6 +288,57 @@ namespace lpr381Project
             return cleanedTableau;
         }
 
+        public void PrintBasicVars(List<List<double>> tableau)
+        {
+            Logger.WriteLine("\n=== BASIC VARIABLE VALUES (Decision Variables Only) ===");
+
+            List<int> basicVarColumns = new List<int>();
+
+            // Only check decision variables (first objFunc.Count columns)
+            for (int col = 0; col < objFunc.Count; col++)
+            {
+                List<double> column = new List<double>();
+
+                // Extract the column values (skip objective row for basic variable identification)
+                for (int row = 1; row < tableau.Count; row++)
+                {
+                    column.Add(cleanValue(tableau[row][col]));
+                }
+
+                // Check if this is a unit vector (exactly one 1, rest 0s)
+                int onesCount = column.Count(x => Math.Abs(x - 1.0) < tolerance);
+                int zerosCount = column.Count(x => Math.Abs(x) < tolerance);
+
+                if (onesCount == 1 && zerosCount == column.Count - 1)
+                {
+                    basicVarColumns.Add(col);
+                }
+            }
+
+            foreach (int col in basicVarColumns)
+            {
+                // Find which row has the "1" for this basic variable
+                int basicRow = -1;
+                for (int row = 1; row < tableau.Count; row++) // Skip objective row
+                {
+                    if (Math.Abs(cleanValue(tableau[row][col]) - 1.0) < tolerance)
+                    {
+                        basicRow = row;
+                        break;
+                    }
+                }
+
+                if (basicRow != -1)
+                {
+                    double rhsValue = cleanValue(tableau[basicRow][tableau[basicRow].Count - 1]);
+                    string varName = $"x{col + 1}";
+                    Logger.WriteLine($"{varName} = {roundValue(rhsValue)}");
+                }
+            }
+
+            Logger.WriteLine();
+        }
+
         public List<List<double>> doCuttingPlane(List<List<double>> workingTableau)
         {
             List<List<double>> currentTableau = cleanTableau(workingTableau);
@@ -337,8 +388,6 @@ namespace lpr381Project
                 // Solve the new problem with dual simplex
                 var result = dual.DoDualSimplex(new List<double>(), new List<List<double>>(), isMin, currentTableau);
                 List<List<List<double>>> finalTableaus = result.Item1;
-                //changingVars = result.Item2;
-                //optimalSolution = result.Item3;
                 var headerStr = result.Item6;
 
                 for (int i = 0; i < finalTableaus.Count; i++)
@@ -364,6 +413,11 @@ namespace lpr381Project
             }
 
             printTableau(currentTableau, title: "Final Optimal Tableau");
+
+            double optimalSolution = currentTableau[0][currentTableau[0].Count - 1];
+            Logger.WriteLine($"Optimal Solution: {roundValue(optimalSolution)}");
+
+            PrintBasicVars(currentTableau);
 
             return currentTableau;
         }
