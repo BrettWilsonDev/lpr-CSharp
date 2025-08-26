@@ -18,6 +18,7 @@ namespace lpr381Project
         List<List<double>> constraints;
         bool isMin;
         List<VariableSignType> varSigns = null;
+        string inputFilePath = ".\\input.txt";
 
         public Main()
         {
@@ -40,21 +41,27 @@ namespace lpr381Project
 
         private void UpdateInput()
         {
-            InputReader reader = new InputReader("input.txt");
+            InputReader reader = new InputReader(inputFilePath);
             var data = reader.GetData();
             (objFunc, constraints, isMin, varSigns) = data;
 
-            if (File.Exists("input.txt"))
+            if (File.Exists(inputFilePath))
             {
-                mainInputBox.Text = File.ReadAllText("input.txt");
+                mainInputBox.Text = File.ReadAllText(inputFilePath);
             }
+            File.WriteAllText(inputFilePath, mainInputBox.Text);
 
-            File.WriteAllText("input.txt", mainInputBox.Text);
+            File.WriteAllText(inputFilePath, mainInputBox.Text);
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            Logger.Close();
+            if (!File.Exists(inputFilePath))
+            {
+                string defaultInputContent =
+                "max +2 +3 +3 +5 +2 +4\n+11 +8 +6 +14 +10 +10 <=40\nbin bin bin bin bin bin";
+                File.WriteAllText(inputFilePath, defaultInputContent); // create an empty file
+            }
 
             UpdateInput();
 
@@ -66,7 +73,7 @@ namespace lpr381Project
 
         private void enterInput_Click(object sender, EventArgs e)
         {
-            File.WriteAllText("input.txt", mainInputBox.Text);
+            File.WriteAllText(inputFilePath, mainInputBox.Text);
             UpdateInput();
         }
 
@@ -189,6 +196,22 @@ namespace lpr381Project
                 Logger.WriteLine($"\nInvalid Input or Fatel Error!");
             }
             Logger.Close();
+        }
+
+        private void pickInputFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Select input file";
+                dialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    inputFilePath = dialog.FileName; // save the chosen file path
+                    mainInputBox.Text = File.ReadAllText(inputFilePath); // show file content
+                    UpdateInput();
+                }
+            }
         }
     }
 }

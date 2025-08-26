@@ -38,6 +38,7 @@
             cuttingPlaneBtn = new Button();
             sensitivityAnalysisBtn = new Button();
             JesusLovesYou = new Label();
+            pickInputFile = new Button();
             SuspendLayout();
             // 
             // mainTextDisplay
@@ -138,11 +139,22 @@
             JesusLovesYou.TabIndex = 9;
             JesusLovesYou.Text = "LPR 381 Project By: \r\nJanita de Vries: 577698 \r\nChristian Olivier: 576753\r\nTiaan Wessels: 600164\r\nBrett David Wilson: 601081";
             // 
+            // pickInputFile
+            // 
+            pickInputFile.Location = new Point(169, 153);
+            pickInputFile.Name = "pickInputFile";
+            pickInputFile.Size = new Size(125, 33);
+            pickInputFile.TabIndex = 10;
+            pickInputFile.Text = "Select Input File";
+            pickInputFile.UseVisualStyleBackColor = true;
+            pickInputFile.Click += pickInputFile_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1157, 583);
+            Controls.Add(pickInputFile);
             Controls.Add(JesusLovesYou);
             Controls.Add(sensitivityAnalysisBtn);
             Controls.Add(cuttingPlaneBtn);
@@ -172,5 +184,6 @@
         private Button cuttingPlaneBtn;
         private Button sensitivityAnalysisBtn;
         private Label JesusLovesYou;
+        private Button pickInputFile;
     }
 }

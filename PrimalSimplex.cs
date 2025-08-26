@@ -619,9 +619,33 @@ namespace lpr381Project
 
             var simplex = new PrimalSimplex(isConsoleOutput: true);
 
-            Logger.WriteLine("Testing Primal Simplex with variable sign restrictions:");
-            Logger.WriteLine($"Objective Function: Maximize {objFunc[0]}x1 + {objFunc[1]}x2");
-            Logger.WriteLine("Constraints:");
+            Logger.WriteLine("=============================================================");
+            if (isMin)
+            {
+                Logger.WriteLine($"Objective Function: Minimize {string.Join(" + ", objFunc.Select((c, i) => $"{c}x{i + 1}"))}");
+            }
+            else
+            {
+                Logger.WriteLine($"Objective Function: Maximize {string.Join(" + ", objFunc.Select((c, i) => $"{c}x{i + 1}"))}");
+            }
+            
+            Logger.WriteLine("\nOriginal Constraints:");
+
+            for (int i = 0; i < constraints.Count; i++)
+            {
+                var constraintTerms = new List<string>();
+                for (int j = 0; j < constraints[i].Count - 2; j++)
+                {
+                    if (constraints[i][j] != 0)
+                    {
+                        string sign = constraints[i][j] > 0 && constraintTerms.Count > 0 ? "+" : "";
+                        constraintTerms.Add($"{sign}{constraints[i][j]}x{j + 1}");
+                    }
+                }
+                string constraintStr = string.Join(" ", constraintTerms);
+                string operator_str =  "<=";
+                Logger.WriteLine($"  {constraintStr} {operator_str} {constraints[i][constraints[i].Count - 2]}");
+            }
 
             for (int i = 0; i < constraints.Count; i++)
             {
@@ -636,9 +660,9 @@ namespace lpr381Project
                 constraintTerms.RemoveAt(constraintTerms.Count - 1);
                 constraintTerms.RemoveAt(constraintTerms.Count - 1);
 
-                string constraintStr = string.Join(" + ", constraintTerms);
-                // Logger.WriteLine($"  {constraintStr} <= {constraints[i][constraints[i].Count - 1]}");
-                Logger.WriteLine($"  {constraintStr} <= {constraints[i][constraints[i].Count - 2]}");
+                //string constraintStr = string.Join(" + ", constraintTerms);
+                //// Logger.WriteLine($"  {constraintStr} <= {constraints[i][constraints[i].Count - 1]}");
+                //Logger.WriteLine($"  {constraintStr} <= {constraints[i][constraints[i].Count - 2]}");
             }
 
             Logger.WriteLine("\n");

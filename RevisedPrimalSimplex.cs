@@ -52,7 +52,7 @@ namespace lpr381Project
             }
 
             public (List<double> transformedObjFunc, List<List<double>> transformedConstraints)
-    TransformVariableSignRestrictions(List<double> objFunc, List<List<double>> constraints, List<VariableSignType> varSigns)
+            TransformVariableSignRestrictions(List<double> objFunc, List<List<double>> constraints, List<VariableSignType> varSigns)
             {
                 var transformedObjFunc = new List<double>();
                 var transformedConstraints = constraints.Select(row => new List<double>()).ToList();
@@ -852,9 +852,6 @@ namespace lpr381Project
 
                 var simplex = new RevisedPrimalSimplex(isConsoleOutput: true);
 
-                // var (objFunc, constraints, isMin, varSigns) = testData.Value;
-
-                Logger.WriteLine("Testing Revised Primal Simplex with Variable Sign Restrictions:");
                 Logger.WriteLine("=============================================================");
                 Logger.WriteLine($"Objective Function: Maximize {string.Join(" + ", objFunc.Select((c, i) => $"{c}x{i + 1}"))}");
                 Logger.WriteLine("\nOriginal Constraints:");
