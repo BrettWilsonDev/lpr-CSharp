@@ -13,13 +13,16 @@ namespace lpr381Project
 
         public static void Init(string filePath = "output.txt", bool append = false)
         {
+            writer?.Dispose();
             writer = new StreamWriter(filePath, append);
             writer.AutoFlush = true;
         }
 
         public static void Close()
         {
-            writer?.Close();
+            //writer?.Close();
+            writer?.Dispose();
+            writer = null;
         }
 
         public static void Write(string message)

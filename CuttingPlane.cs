@@ -459,6 +459,8 @@ namespace lpr381Project
 
             (objFunc, constraints) = SetUpProblem(objFunc, constraints, varSigns);
 
+            CanonicalFormBuilder.BuildCanonicalForm(objFunc, constraints);
+
             // Initial dual simplex solution
             var result = dual.DoDualSimplex(objFunc, constraints, isMin);
             List<List<List<double>>> workingTableaus = result.Item1;

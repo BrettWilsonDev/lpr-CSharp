@@ -54,6 +54,8 @@ namespace lpr381Project
 
         private void Main_Load(object sender, EventArgs e)
         {
+            Logger.Close();
+
             UpdateInput();
 
             // Configure RichTextBox
@@ -77,6 +79,18 @@ namespace lpr381Project
             {
                 Logger.WriteLine("Primal Simplex\n");
                 PrimalSimplex primalSimplex = new PrimalSimplex(true);
+                // test for >=
+                int ctr = 0;
+                foreach (var constraint in constraints)
+                {
+                    ctr++;
+                    if (constraint.Count > 0 && constraint[constraint.Count - 1] == 1)
+                    {
+                        // Do something if the last element is 1
+                        Logger.WriteLine($"Primal Simplex Cannot handle >= constraint Assuming You wanted <= for c{ctr}");
+                        Logger.WriteLine("\n");
+                    }
+                }
                 primalSimplex.RunPrimalSimplex(objFunc, constraints, isMin, varSigns);
             }
             catch (Exception ex)
@@ -128,7 +142,7 @@ namespace lpr381Project
             Logger.Init("output.txt");
             try
             {
-                Logger.WriteLine("Branch And Bound Simplex\n");
+                Logger.WriteLine("Branch And Bound KnapSack\n");
                 KnapSack knapSack = new KnapSack(true);
                 knapSack.RunBranchAndBoundKnapSack(objFunc, constraints, isMin, varSigns);
             }
@@ -148,7 +162,6 @@ namespace lpr381Project
             Logger.Init("output.txt");
             try
             {
-
                 Logger.WriteLine("Cutting Plane\n");
                 CuttingPlane cuttingPlane = new CuttingPlane(true);
                 cuttingPlane.RunCuttingPlane(objFunc, constraints, isMin, varSigns);

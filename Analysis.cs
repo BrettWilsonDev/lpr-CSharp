@@ -26,6 +26,7 @@ namespace lpr381Project
         public Analysis()
         {
             InitializeComponent();
+            this.FormClosing += Analysis_FormClosing;
         }
 
         public void SetProblem(List<double> objFuncPassed, List<List<double>> constraintsPassed, bool isMinPassed, List<VariableSignType> varSignsPassed = null)
@@ -381,8 +382,6 @@ namespace lpr381Project
             inputConsLbl.Hide();
             consBtn.Hide();
 
-
-
             Logger.Init("SensitivityAnalysis.txt");
             sensitivityAnalysis.HandleNonBasicColumnChange();
             Logger.Close();
@@ -513,21 +512,15 @@ namespace lpr381Project
                     tab[i].Insert(insertIndex, displayCol[i]);
                 }
 
-                //for (int row = 0; row < tab.Count; row++)
-                //{
-                //    Logger.WriteLine(string.Join(" ", tab[row]));
-                //}
-
                 sensitivityAnalysis.PrintTableau(tab, "New Activity Added");
             }
             catch (Exception ex)
             {
                 Logger.WriteLine("Invalid Input");
             }
-            finally
-            {
-                Logger.Close();
-            }
+
+            Logger.Close();
+            
 
             UpdateOutput();
         }
@@ -650,6 +643,30 @@ namespace lpr381Project
             Logger.Close();
 
             UpdateOutput();
+        }
+
+        //private void Analysis_FormClosed(object sender, FormClosedEventArgs e)
+        //{
+        //    Logger.Close();
+        //}
+
+        private void Analysis_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //DialogResult result = MessageBox.Show(
+            //    "Are you sure you want to exit?",
+            //    "Confirm Exit",
+            //    MessageBoxButtons.YesNo,
+            //    MessageBoxIcon.Question
+            //);
+
+            //if (result == DialogResult.No)
+            //{
+            //    e.Cancel = true; // cancel closing
+            //}
+            //else
+            //{
+                Logger.Close(); // close writer if user confirms
+            //}
         }
     }
 }
